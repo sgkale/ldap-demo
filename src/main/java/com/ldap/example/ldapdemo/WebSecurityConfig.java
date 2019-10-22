@@ -21,15 +21,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
+      /*  auth
                 .ldapAuthentication()
                 .userDnPatterns("uid={0},ou=people")
                 .groupSearchBase("ou=groups")
                 .contextSource()
-                .url("ldap://localhost:8389/dc=springframework,dc=org")
+                .url("ldap://10.75.49.60:389/dc=springframework,dc=org")
                 .and()
                 .passwordCompare()
                 .passwordEncoder(new LdapShaPasswordEncoder())
-                .passwordAttribute("userPassword");
+                .passwordAttribute("userPassword");*/
+        auth
+                .ldapAuthentication()
+               // .userDetailsContextMapper(inetOrgPersonContextMapper())
+                .userSearchFilter("(uid={0})")
+                .userSearchBase("dc=example,dc=org")
+                .groupSearchBase("ou=people,dc=example,dc=org")
+                .groupSearchFilter("cn={0}")
+                .contextSource()
+                .url("ldap://ip")
+                .port(389)
+                .managerDn("cn=admin,dc=example,dc=org")
+                .managerPassword("admin");
     }
 }
